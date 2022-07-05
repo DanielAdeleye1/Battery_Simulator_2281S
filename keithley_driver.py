@@ -69,16 +69,31 @@ def PowerSupply_SetOutputState(ksocket, myState):
 def PowerSupply_GetOutputState(ksocket):
     return instrQuery(ksocket, "OUTP:STAT?", 16)
 
+#   SETTING BATTERY PARAMETERS
+def BatterySimulator_SelectModel(ksocket, modelindex):
+    sndBuffer = "BATT:MOD:RCL {}".format(modelindex)
+    instrSend(ksocket, sndBuffer)
+
+def BatterySimulator_SetSOC(ksocket, SOCVal):
+    sndBuffer = "BATT:SIM:SOC {}".format(SOCVal)
+    instrSend(ksocket, sndBuffer)
+
 
 #   GETTING BATTERY DATA FROM SIMULATOR MODE
+
+def BatterySimulator_GetModel(ksocket):
+    return instrQuery(ksocket, ":BATT:MOD:RCL?", 16)
+
+def PowerSupply_GetVoc(ksocket):
+    return instrQuery(ksocket, ":BATT:SIM:VOC?", 16)
 
 def PowerSupply_GetCurrent(ksocket):
     sndBuffer = "SOUR1:CURR?"
     return instrQuery(ksocket, sndBuffer, 32)
 
-def PowerSupply_GetVoltage(kocket):
+def PowerSupply_GetVoltage(ksocket):
     sndBuffer = "SOUR1:VOLT?"
-    return instrQuery(kocket, sndBuffer, 32)
+    return instrQuery(ksocket, sndBuffer, 32)
 
 def BatterySimulator_GetCapacity(ksocket):
     return instrQuery(ksocket, ":BATT:SIM:CAP?", 16)
@@ -94,5 +109,3 @@ def BatterySimulator_GetOverVoltageProtection(ksocket):
 
 def BatterySimulator_GetOverCurrentProtection(ksocket):
     return instrQuery(ksocket, ":BATT:SIM:CURR:PROT?", 16)
-
-
